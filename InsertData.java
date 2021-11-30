@@ -20,7 +20,6 @@ public class InsertData {
 			System.out.println("1. 회원정보 추가");
 			System.out.println("2. 기저질환 정보 추가");
 			System.out.println("3. 접종 예약하기");
-			System.out.println("4. 이전화면");
 			
 			System.out.print("메뉴를 선택해 주세요 : ");
 				
