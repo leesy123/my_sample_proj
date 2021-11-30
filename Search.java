@@ -425,6 +425,54 @@ public class Search {
 			System.exit(1);
 		}
 	}
-	
+		//유저 번호를 이용해 방문 기록 검색
+	public void Search_Log() {
+		//for eliminating \n in console
+		keyboard.nextLine();
+		
+		String sql = "";
+		ResultSet rs = null;
+		
+		try {	
+			System.out.print("Enter your User number : ");
+			String u_number = keyboard.nextLine();
+			
+			sql = "SELECT c.Name, s.Name, v.Visit_time\n"
+					+ "FROM VISIT_LOG v, CLIENT c, SHOP s\n"
+					+ "WHERE v.Unumber = c.Unumber\n"
+					+ "AND v.Snumber = s.Snumber\n"
+					+ "AND c.Unumber ='" + u_number +"'";
+
+			stmt = conn.prepareStatement(sql.toString(),ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			rs = stmt.executeQuery(sql);
+			
+			int size = -1;
+			rs.last();
+			size = rs.getRow();
+			rs.beforeFirst();
+			
+			if(size == 0) {
+				System.out.println("No results found.");
+			} 
+			else {
+				System.out.println("Name | Shop | Visit time");
+				System.out.println("--------------------------");
+				
+				while(rs.next()) {
+					String name = rs.getString(1);
+					String shop = rs.getString(2);
+					java.sql.Date date = rs.getDate(3);
+					
+					java.util.Date rDate = new java.util.Date(date.getTime());
+					System.out.println(name + "  | " + shop + " | " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(rDate));
+				}
+			}
+			
+		}catch(SQLException ex2) {
+			System.err.println("sql error = " + ex2.getMessage());
+			System.exit(1);
+		}
+	}
 
 }
